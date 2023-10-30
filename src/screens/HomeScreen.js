@@ -31,7 +31,7 @@ export default function HomeScreen() {
         setCategories(response.data.categories)
       }
     } catch(err) {
-      console.log('@error:: ', err.message)
+      console.log('@error-getCategories:: ', err.message)
     }
   }
 
@@ -43,7 +43,7 @@ export default function HomeScreen() {
         setMeals(response.data.meals)
       }
     } catch(err) {
-      console.log('@error:: ', err.message)
+      console.log('@error-getMeals:: ', err.message)
     }
   }
 

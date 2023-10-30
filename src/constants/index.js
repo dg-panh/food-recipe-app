@@ -35,3 +35,7 @@ export const mealData = [
         image: 'https://www.themealdb.com/images/media/meals/uuqvwu1504629254.jpg'
     }
 ]
+
+export const COLORS = {
+    main: '#525252'
+}
