@@ -1,16 +1,52 @@
 export const categoryData = [
     {
-        name: 'Starter',
+        name: 'Main course',
         image: 'https://www.themealdb.com/images/category/starter.png'
     },
     {
-        name: 'Beef',
+        name: 'Side dish',
         image: 'https://themealdb.com/images/category/beef.png'
     },
     {
         name: 'Dessert',
         image: 'https://themealdb.com/images/category/dessert.png'
-    }
+    },
+    {
+        name: 'Appetizer',
+        image: 'https://www.themealdb.com/images/category/starter.png'
+    },
+    {
+        name: 'Salad',
+        image: 'https://themealdb.com/images/category/beef.png'
+    },
+    {
+        name: 'Bread',
+        image: 'https://themealdb.com/images/category/dessert.png'
+    },
+    {
+        name: 'Breakfast',
+        image: 'https://www.themealdb.com/images/category/starter.png'
+    },
+    {
+        name: 'Soup',
+        image: 'https://themealdb.com/images/category/beef.png'
+    },
+    {
+        name: 'Beverage',
+        image: 'https://themealdb.com/images/category/dessert.png'
+    },
+    {
+        name: 'Sauce',
+        image: 'https://www.themealdb.com/images/category/starter.png'
+    },
+    {
+        name: 'Finger food',
+        image: 'https://spoonacular.com/recipeImages/642129-312x231.jpg'
+    },
+    {
+        name: 'Snack',
+        image: 'https://spoonacular.com/recipeImages/715543-312x231.jpg'
+    },
 ]
 
 export const mealData = [

@@ -17,7 +17,7 @@ export default function WelcomeScreen() {
         setTimeout(() => paddingAnimation1.value = withSpring(paddingAnimation1.value + hp(5)), 100);
         setTimeout(() => paddingAnimation2.value = withSpring(paddingAnimation2.value + hp(5.5)), 300);
     
-        setTimeout(() => navigation.navigate('Home'), 2500);
+        setTimeout(() => navigation.navigate('Main'), 2500);
     })
 
     return (

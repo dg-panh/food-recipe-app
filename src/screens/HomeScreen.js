@@ -6,9 +6,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import Categories from '../components/categories'
 import axios from 'axios'
 import Recipes from '../components/recipes'
+import Header from '../components/header'
+import { categoryData } from '../constants'
 
 export default function HomeScreen() {
-  const [activeCategory, setActiveCategory] = useState('Beef')
+  const [activeCategory, setActiveCategory] = useState('Main course')
   const [categories, setCategories] = useState([])
   const [meals, setMeals] = useState([])
 
@@ -56,10 +58,7 @@ export default function HomeScreen() {
         className='space-y-6 pt-14'
       >
         {/* header */}
-        <View className='mx-4 flex-row justify-between items-center mb-2'>
-          <Image source={require('../../assets/images/avatar.png')} style={{ height: hp(5), width: hp(5) }} />
-          <BellIcon size={hp(4)} color='gray' />
-        </View>
+        <Header />
 
         {/* punchline */}
         <View className='mx-4 space-y-2 mb-2'>
@@ -92,7 +91,7 @@ export default function HomeScreen() {
         {/* categories */}
         <View>
           {categories.length > 0 && (
-            <Categories categories={categories} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
+            <Categories categories={categoryData} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
           )}
         </View>
 
