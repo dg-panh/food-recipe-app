@@ -9,7 +9,7 @@ import Loading from './loading'
 import { useNavigation } from '@react-navigation/native'
 
 
-export default function Recipes({ categories, meals }) {
+export default function Recipes({ meals }) {
     const navigation = useNavigation();
     return (
         <View className='mx-4 space-y-2'>
@@ -20,12 +20,12 @@ export default function Recipes({ categories, meals }) {
                 Recipes
             </Text>
             <View>
-                {categories.length == 0 || meals.length == 0 ? (
+                {meals.length == 0 ? (
                     <Loading size='large' className='mt-20' />
                 ) : (
                     <MasonryList
                         data={meals}
-                        keyExtractor={(item) => item.idMeal}
+                        keyExtractor={(item) => item.id}
                         numColumns={2}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item, i }) => <RecipeCard item={item} index={i} navigation={navigation} />}
@@ -50,13 +50,13 @@ const RecipeCard = ({ item, index, navigation }) => {
                 onPress={() => navigation.navigate('RecipeDetail', {...item})}
             >
                 <Image
-                    source={{ uri: item.strMealThumb }}
+                    source={{ uri: item.image }}
                     style={{ width: '100%', height: index % 3 == 0 ? hp(25) : hp(35), borderRadius: 35 }}
                     className='bg-black/5'
                 />
                 <Text style={{ fontSize: hp(1.5) }} className="font-semibold ml-2 text-neutral-600">
                     {
-                        item.strMeal.length > 20 ? `${item.strMeal.slice(0, 20)}...` : item.strMeal
+                        item.title.length > 20 ? `${item.title.slice(0, 20)}...` : item.title
                     }
                 </Text>
             </Pressable>

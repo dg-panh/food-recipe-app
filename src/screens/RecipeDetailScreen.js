@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 import Loading from '../components/loading'
-import { COLORS } from '../constants'
+import { COLORS, apiKey } from '../constants'
 import BadgeIcon from '../components/badgeIcon'
 import YoutubeIframe from 'react-native-youtube-iframe'
 import * as Linking from 'expo-linking'
@@ -38,22 +38,24 @@ const MISC = [
 
 export default function RecipeDetailScreen(props) {
     let item = props.route.params;
-    // console.log('@meal detail:: ', item)
+    console.log('@meal detail:: ', item)
     const [isFav, setIsFav] = useState(false);
     const navigation = useNavigation();
     const [meal, setMeal] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        getMealDetail(item.idMeal);
+        getMealDetail(item.id);
     })
 
     const getMealDetail = async (id) => {
         try {
-            const response = await axios.get(`https://themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+            const response = await axios.get(
+                `https://api.spoonacular.com/recipes/${id}/information?apiKey=${apiKey}`
+            )
             // console.log('@meal detail:: ', response.data)
             if (response && response.data) {
-                setMeal(response.data.meals[0]);
+                setMeal(response.data);
                 setIsLoading(false);
             }
         } catch (err) {
@@ -118,10 +120,10 @@ export default function RecipeDetailScreen(props) {
                     {/* name and area */}
                     <Animated.View entering={FadeInDown.duration(700).springify().damping(12)} className="space-y-2">
                         <Text style={{ fontSize: hp(3) }} className="font-bold flex-1 text-neutral-700">
-                            {meal?.strMeal}
+                            {meal?.title}
                         </Text>
                         <Text style={{ fontSize: hp(2) }} className="font-medium flex-1 text-neutral-500">
-                            {meal?.strArea}
+                            {meal?.cuisines[0]}
                         </Text>
                     </Animated.View>
 

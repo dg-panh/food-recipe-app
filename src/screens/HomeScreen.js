@@ -7,7 +7,7 @@ import Categories from '../components/categories'
 import axios from 'axios'
 import Recipes from '../components/recipes'
 import Header from '../components/header'
-import { categoryData } from '../constants'
+import { apiKey, categoryData } from '../constants'
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState('Main course')
@@ -37,12 +37,14 @@ export default function HomeScreen() {
     }
   }
 
-  const getRecipes = async(category = 'Beef') => {
+  const getRecipes = async(category = 'Main course') => {
     try {
-      const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=${category}`)
+      const response = await axios.get(
+        `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&number=6&type=${category}`
+      )
       // console.log('@meals got:: ', response.data)
       if(response && response.data) {
-        setMeals(response.data.meals)
+        setMeals(response.data.results)
       }
     } catch(err) {
       console.log('@error-getMeals:: ', err.message)
@@ -97,7 +99,7 @@ export default function HomeScreen() {
 
         {/* recipes */}
         <View>
-          <Recipes meals={meals} categories={categories} />
+          <Recipes meals={meals} />
         </View>
 
       </ScrollView>

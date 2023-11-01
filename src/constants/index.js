@@ -1,11 +1,11 @@
 export const categoryData = [
     {
         name: 'Main course',
-        image: 'https://www.themealdb.com/images/category/starter.png'
+        image: 'https://themealdb.com/images/category/beef.png'
     },
     {
         name: 'Side dish',
-        image: 'https://themealdb.com/images/category/beef.png'
+        image: 'https://www.themealdb.com/images/category/starter.png'
     },
     {
         name: 'Dessert',
@@ -13,31 +13,31 @@ export const categoryData = [
     },
     {
         name: 'Appetizer',
-        image: 'https://www.themealdb.com/images/category/starter.png'
+        image: 'https://spoonacular.com/recipeImages/716406-312x231.jpg'
     },
     {
         name: 'Salad',
-        image: 'https://themealdb.com/images/category/beef.png'
+        image: 'https://spoonacular.com/recipeImages/729366-312x231.jpg'
     },
     {
         name: 'Bread',
-        image: 'https://themealdb.com/images/category/dessert.png'
+        image: 'https://spoonacular.com/recipeImages/661292-312x231.jpg'
     },
     {
         name: 'Breakfast',
-        image: 'https://www.themealdb.com/images/category/starter.png'
+        image: 'https://spoonacular.com/recipeImages/640275-312x231.jpg'
     },
     {
         name: 'Soup',
-        image: 'https://themealdb.com/images/category/beef.png'
+        image: 'https://spoonacular.com/recipeImages/664147-312x231.jpg'
     },
     {
         name: 'Beverage',
-        image: 'https://themealdb.com/images/category/dessert.png'
+        image: 'https://spoonacular.com/recipeImages/715497-312x231.jpg'
     },
     {
         name: 'Sauce',
-        image: 'https://www.themealdb.com/images/category/starter.png'
+        image: 'https://spoonacular.com/recipeImages/716338-312x231.jpg'
     },
     {
         name: 'Finger food',
@@ -45,7 +45,7 @@ export const categoryData = [
     },
     {
         name: 'Snack',
-        image: 'https://spoonacular.com/recipeImages/715543-312x231.jpg'
+        image: 'https://spoonacular.com/recipeImages/632252-312x231.jpg'
     },
 ]
 
@@ -75,3 +75,5 @@ export const mealData = [
 export const COLORS = {
     main: '#525252'
 }
+
+export const apiKey = 'bf0e267462d14fc8aec2e84396088d5c';
