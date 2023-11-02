@@ -130,7 +130,7 @@ export default function FavoriteScreen({ navigation }) {
                         <View style={styles.noResultContainer}>
                             <AntDesign name="folderopen" size={48} color="black" />
                             <Text style={styles.noResultText}>
-                                No favorite orchids found.
+                                No favorite recipes found.
                             </Text>
                         </View>
                         ) : (
@@ -138,7 +138,7 @@ export default function FavoriteScreen({ navigation }) {
                                 <FavCard
                                     key={meal.idMeal}
                                     mealData={meal}
-                                    removeFavorite={removeFavorite}
+                                    remove={removeFavorite}
                                     navigation={navigation}
                                 />
                             ))

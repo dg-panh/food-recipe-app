@@ -16,22 +16,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const MISC = [
     {
-        icon: <ClockIcon size={hp(4)} strokeWidth={2.5} color={COLORS.main} />,
+        icon: <ClockIcon size={hp(4)} strokeWidth={2.5} color={COLORS.gray} />,
         number: '35',
         unit: 'Mins',
     },
     {
-        icon: <UserIcon size={hp(4)} strokeWidth={2.5} color={COLORS.main} />,
+        icon: <UserIcon size={hp(4)} strokeWidth={2.5} color={COLORS.gray} />,
         number: '03',
         unit: 'Servings',
     },
     {
-        icon: <FireIcon size={hp(4)} strokeWidth={2.5} color={COLORS.main} />,
+        icon: <FireIcon size={hp(4)} strokeWidth={2.5} color={COLORS.gray} />,
         number: '103',
         unit: 'Cal',
     },
     {
-        icon: <Square3Stack3DIcon size={hp(4)} strokeWidth={2.5} color={COLORS.main} />,
+        icon: <Square3Stack3DIcon size={hp(4)} strokeWidth={2.5} color={COLORS.gray} />,
         number: ' ',
         unit: 'Easy',
     },

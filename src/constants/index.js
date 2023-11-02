@@ -73,28 +73,14 @@ export const mealData = [
 ]
 
 export const mealPLanList = {
-    '2023-11-02': [
-        {
-            name: 'Shakshuka',
-            image: 'https://www.themealdb.com/images/media/meals/g373701551450225.jpg'
-        },
-        {
-            name: 'Beef Banh Mi Bowls with Sriracha Mayo',
-            image: 'https://www.themealdb.com/images/media/meals/z0ageb1583189517.jpg'
-        },
-        {
-            name: 'Chickpea Fajitas',
-            image: 'https://www.themealdb.com/images/media/meals/tvtxpq1511464705.jpg'
-        },
-    ],
-    '2023-11-04': [
-        {
-            name: 'Smoky Lentil Chili with Squash',
-            image: 'https://www.themealdb.com/images/media/meals/uwxqwy1483389553.jpg'
-        },
-    ]
+    '2023-11-06': ['53063'],
+    '2023-11-04': ['53064', '53065', '52794'],
+    '2023-11-05': ['52935', '52814'],
+    '2023-11-16': ['52912', '52843'],
 }
 
 export const COLORS = {
-    main: '#525252'
+    gray: '#525252',
+    main: '#ff9500',
+    green: '#42956D',
 }

@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const FavCard = ({ mealData, removeFavorite, navigation }) => {
+const FavCard = ({ mealData, remove, navigation }) => {
     const [icon, setIcon] = useState("delete-outline");
     const pressTimeout = useRef(null);
 
@@ -20,7 +20,7 @@ const FavCard = ({ mealData, removeFavorite, navigation }) => {
     const showDeleteAlert = () => {
         setIcon("delete");
         Alert.alert(
-            "Delete Orchid",
+            "Delete Meal",
             `Are you sure you want to delete ${mealData.strMeal}?`,
             [
                 {
@@ -30,7 +30,7 @@ const FavCard = ({ mealData, removeFavorite, navigation }) => {
                 },
                 {
                     text: "Delete",
-                    onPress: () => removeFavorite(mealData.idMeal),
+                    onPress: () => remove(mealData.idMeal),
                     style: "destructive",
                 },
             ]
