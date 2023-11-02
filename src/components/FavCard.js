@@ -1,35 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import axios from "axios";
 
-const FavCard = ({ mealId, removeFavorite, navigation }) => {    
-    const [meal, setMeal] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+const FavCard = ({ mealData, removeFavorite, navigation }) => {
     const [icon, setIcon] = useState("delete-outline");
     const pressTimeout = useRef(null);
-
-    useEffect(() => {
-        getMealDetail(mealId);
-    }, [])
-
-    const getMealDetail = async (id) => {
-        try {
-            const response = await axios.get(`https://themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
-            // console.log('@meal detail:: ', response.data)
-            if (response && response.data) {
-                setMeal(response.data.meals[0]);
-                setIsLoading(false);
-            }
-        } catch (err) {
-            console.log('@error-getMealDetail in FavCard:: ', err.message);
-        }
-    }
-
-    if (!mealId) {
-        return null;
-    }
-
 
     const handlePressIn = () => {
         pressTimeout.current = setTimeout(() => {
@@ -46,7 +21,7 @@ const FavCard = ({ mealId, removeFavorite, navigation }) => {
         setIcon("delete");
         Alert.alert(
             "Delete Orchid",
-            `Are you sure you want to delete ${meal.strMeal}?`,
+            `Are you sure you want to delete ${mealData.strMeal}?`,
             [
                 {
                     text: "Cancel",
@@ -55,25 +30,27 @@ const FavCard = ({ mealId, removeFavorite, navigation }) => {
                 },
                 {
                     text: "Delete",
-                    onPress: () => removeFavorite(mealId),
+                    onPress: () => removeFavorite(mealData.idMeal),
                     style: "destructive",
                 },
             ]
         );
     };
 
-
     const handlePress = () => {
-        navigation.navigate("RecipeDetail", meal)
-    }
+        navigation.navigate("RecipeDetail", mealData);
+    };
 
     return (
         <TouchableWithoutFeedback onPress={handlePress}>
             <View style={styles.card}>
-                <Image source={{ uri: meal.strMealThumb }} style={styles.image} />
+                <Image
+                    source={{ uri: mealData.strMealThumb }}
+                    style={styles.image}
+                />
                 <View style={styles.cardContent}>
-                    <Text style={styles.title}>{meal.strMeal}</Text>
-                    <Text style={styles.category}>{meal.strCategory}</Text>
+                    <Text style={styles.title}>{mealData.strMeal}</Text>
+                    <Text style={styles.category}>{mealData.strCategory}</Text>
                 </View>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -94,9 +71,8 @@ const FavCard = ({ mealId, removeFavorite, navigation }) => {
                         color={icon === "delete-outline" ? "red" : "white"}
                     />
                 </TouchableOpacity>
-            </View>            
+            </View>
         </TouchableWithoutFeedback>
-
     );
 };
 
