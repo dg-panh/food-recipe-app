@@ -8,7 +8,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 import { COLORS } from "../constants";
 import FavoriteScreen from "../screens/FavoriteScreen";
-import CommunityScreen from "../screens/CommunityScreen";
 import MealPlanScreen from "../screens/MealPlanScreen";
 
 const { createNativeStackNavigator } = require("@react-navigation/native-stack");
@@ -58,16 +57,6 @@ function BottomNavigator() {
                     tabBarLabel:"",
                     tabBarIcon: ({ color, size }) => (
                         <HeartIcon size={size} color={color}></HeartIcon>
-                    ),
-                }}
-            ></BottomTabs.Screen>
-            <BottomTabs.Screen
-                name="Community"
-                component={CommunityScreen}
-                options={{
-                    tabBarLabel:"",
-                    tabBarIcon: ({ color, size }) => (
-                        <UserGroupIcon size={size} color={color}></UserGroupIcon>
                     ),
                 }}
             ></BottomTabs.Screen>
