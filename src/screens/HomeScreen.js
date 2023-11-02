@@ -10,7 +10,7 @@ import Header from '../components/header'
 import { categoryData } from '../constants'
 
 export default function HomeScreen() {
-  const [activeCategory, setActiveCategory] = useState('Main course')
+  const [activeCategory, setActiveCategory] = useState('Beef')
   const [categories, setCategories] = useState([])
   const [meals, setMeals] = useState([])
 
@@ -91,7 +91,7 @@ export default function HomeScreen() {
         {/* categories */}
         <View>
           {categories.length > 0 && (
-            <Categories categories={categoryData} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
+            <Categories categories={categories} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
           )}
         </View>
 
