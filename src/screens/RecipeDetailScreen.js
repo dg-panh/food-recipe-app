@@ -38,10 +38,11 @@ const MISC = [
 
 export default function RecipeDetailScreen(props) {
     let item = props.route.params;
-    // console.log('@meal detail:: ', item)
+    //console.log('@meal detail:: ', item)
     const [isFav, setIsFav] = useState(false);
     const navigation = useNavigation();
     const [meal, setMeal] = useState(null);
+    //console.log('@meal detail:: ', meal)
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -57,7 +58,7 @@ export default function RecipeDetailScreen(props) {
                 setIsLoading(false);
             }
         } catch (err) {
-            console.log('@error-getMealDetail:: ', err.message);
+            console.log('@error-getMealDetail in RecipeDetail:: ', err.message);
         }
     }
 

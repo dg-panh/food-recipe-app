@@ -4,8 +4,12 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 import Header from '../components/header'
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline'
+import FavCard from '../components/FavCard'
 
-export default function FavoriteScreen() {
+const idArray = ["52874"];
+
+export default function FavoriteScreen({navigation}) {
+
     return (
         <View className="flex-1 bg-gray-50">
             <StatusBar style='dark' />
@@ -33,6 +37,14 @@ export default function FavoriteScreen() {
                         <MagnifyingGlassIcon size={hp(2.5)} strokeWidth={3} color={'gray'} />
                     </View>
                 </View>
+
+                <ScrollView
+                    showsVerticalScrollIndicator={true}
+                >
+                    {idArray.map((mealId, index) => (
+                        <FavCard key={index} mealId={mealId} navigation={navigation} />
+                    ))}
+                </ScrollView>
             </ScrollView>
 
         </View>
