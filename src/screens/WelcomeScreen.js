@@ -1,5 +1,5 @@
 import { View, Text, Image } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
@@ -10,15 +10,21 @@ export default function WelcomeScreen() {
     const paddingAnimation2 = useSharedValue(0);
 
     const navigation = useNavigation();
+    const hasNavigated = useRef(false);
 
     useEffect(() => {
         paddingAnimation1.value = 0;
         paddingAnimation2.value = 0;
         setTimeout(() => paddingAnimation1.value = withSpring(paddingAnimation1.value + hp(5)), 100);
         setTimeout(() => paddingAnimation2.value = withSpring(paddingAnimation2.value + hp(5.5)), 300);
-    
-        setTimeout(() => navigation.navigate('Main'), 2500);
-    })
+
+        if (!hasNavigated.current) {
+            setTimeout(() => {
+                navigation.navigate('Main');
+                hasNavigated.current = true;
+            }, 2500);
+        }
+    }, []);
 
     return (
         <View className="flex-1 justify-center items-center space-y-10 bg-amber-500">

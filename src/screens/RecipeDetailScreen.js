@@ -11,6 +11,7 @@ import { COLORS } from '../constants'
 import BadgeIcon from '../components/badgeIcon'
 import YoutubeIframe from 'react-native-youtube-iframe'
 import * as Linking from 'expo-linking'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const MISC = [
@@ -38,16 +39,66 @@ const MISC = [
 
 export default function RecipeDetailScreen(props) {
     let item = props.route.params;
-    // console.log('@meal detail:: ', item)
+    //console.log('@meal detail:: ', item)
     const [isFav, setIsFav] = useState(false);
     const navigation = useNavigation();
     const [meal, setMeal] = useState(null);
+    //console.log('@meal detail:: ', meal)
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         getMealDetail(item.idMeal);
-    })
+        loadFavoriteState();
+    }, [])
 
+    const loadFavoriteState = async () => {
+        try {
+            const favorites = await AsyncStorage.getItem("favorites");
+            if (favorites) {
+                const parsedFavorites = JSON.parse(favorites);
+                // Check if the current meal is in the favorites list
+                if (parsedFavorites.includes(props.route.params.idMeal)) {
+                    setIsFav(true);
+                }
+            }
+            console.log('Favorite state loaded in get:', favorites);
+        } catch (error) {
+            console.error("Error loading favorite state:", error);
+        }
+    };
+    
+    const toggleFavorite = async () => {
+        // Toggle the favorite state
+        setIsFav(!isFav);
+
+        try {
+            const favorites = await AsyncStorage.getItem("favorites");
+            let updatedFavorites = [];
+            if (favorites) {
+                updatedFavorites = JSON.parse(favorites);
+            }
+
+            // Update the list of favorite meal IDs
+            if (isFav) {
+                updatedFavorites = updatedFavorites.filter(
+                    (id) => id !== props.route.params.idMeal
+                );
+            } else {
+                updatedFavorites.push(props.route.params.idMeal);
+            }
+
+            // Save the updated list back to AsyncStorage
+            await AsyncStorage.setItem(
+                "favorites",
+                JSON.stringify(updatedFavorites)
+            );
+            console.log('Favorite state loaded in toggle:', updatedFavorites);
+
+        } catch (error) {
+            console.error("Error updating favorite state:", error);
+        }
+    };
+    
     const getMealDetail = async (id) => {
         try {
             const response = await axios.get(`https://themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
@@ -57,7 +108,7 @@ export default function RecipeDetailScreen(props) {
                 setIsLoading(false);
             }
         } catch (err) {
-            console.log('@error-getMealDetail:: ', err.message);
+            console.log('@error-getMealDetail in RecipeDetail:: ', err.message);
         }
     }
 
@@ -77,7 +128,7 @@ export default function RecipeDetailScreen(props) {
         const regex = /[?&]v=([^&]+)/;
         const match = url.match(regex);
         if (match && match[1]) {
-          return match[1];
+            return match[1];
         }
         return null;
     }
@@ -104,7 +155,7 @@ export default function RecipeDetailScreen(props) {
                 <TouchableOpacity onPress={() => navigation.goBack()} className='p-2 rounded-full ml-5 bg-white'>
                     <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color={'#fbbf24'} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setIsFav(!isFav)} className='p-2 rounded-full mr-5 bg-white'>
+                <TouchableOpacity onPress={toggleFavorite} className='p-2 rounded-full mr-5 bg-white'>
                     <HeartIcon size={hp(3.5)} strokeWidth={4.5} color={isFav ? 'red' : 'gray'} />
                 </TouchableOpacity>
             </View>
