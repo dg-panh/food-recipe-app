@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedba
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 
-const FavCard = ({ mealId, navigation }) => {    
+const FavCard = ({ mealId, removeFavorite, navigation }) => {    
     const [meal, setMeal] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [icon, setIcon] = useState("delete-outline");
@@ -11,7 +11,7 @@ const FavCard = ({ mealId, navigation }) => {
 
     useEffect(() => {
         getMealDetail(mealId);
-    })
+    }, [])
 
     const getMealDetail = async (id) => {
         try {
@@ -55,7 +55,7 @@ const FavCard = ({ mealId, navigation }) => {
                 },
                 {
                     text: "Delete",
-                    onPress: () => setIcon("delete-outline"),
+                    onPress: () => removeFavorite(mealId),
                     style: "destructive",
                 },
             ]
