@@ -8,6 +8,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 import FavCard from '../components/FavCard';
 import Header from '../components/header';
+import RemoveAllButton from '../components/RemoveAllButton';
 
 
 export default function FavoriteScreen({ navigation }) {
@@ -49,6 +50,14 @@ export default function FavoriteScreen({ navigation }) {
         }
     }
 
+    const removeAllFavorites = async () => {
+        await AsyncStorage.removeItem('favorites');
+        setFavoriteIds([]);
+    };
+
+    const enabled = favoriteIds.length > 1;
+
+
     return (
         <View className="flex-1 bg-gray-50">
             <StatusBar style='dark' />
@@ -76,6 +85,8 @@ export default function FavoriteScreen({ navigation }) {
                         <MagnifyingGlassIcon size={hp(2.5)} strokeWidth={3} color={'gray'} />
                     </View>
                 </View>
+
+                <RemoveAllButton enabled={enabled} onPress={removeAllFavorites} />
 
                 <ScrollView showsVerticalScrollIndicator={true}>
                     {favoriteIds.map((mealId) => (

@@ -103,7 +103,7 @@ const FavCard = ({ mealId, removeFavorite, navigation }) => {
 const styles = StyleSheet.create({
     card: {
         flexDirection: "row",
-        backgroundColor: "gray",
+        backgroundColor: "#fff",
         borderRadius: 10,
         margin: 10,
         overflow: "hidden",
