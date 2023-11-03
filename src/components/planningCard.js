@@ -3,6 +3,10 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedba
 import { MaterialIcons } from "@expo/vector-icons";
 import Loading from "./loading";
 import axios from "axios";
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-menu";
+import { BellIcon, EllipsisVerticalIcon } from "react-native-heroicons/outline";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
 
 export default function PlanningCard({ item, remove, navigation }) {
     const [icon, setIcon] = useState("delete-outline");
@@ -76,25 +80,31 @@ export default function PlanningCard({ item, remove, navigation }) {
                         <Text style={styles.title}>{mealData.strMeal}</Text>
                         <Text style={styles.category}>{mealData.strCategory}</Text>
                     </View>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        style={[
-                            styles.deleteButton,
-                            {
-                                backgroundColor:
-                                    icon === "delete-outline" ? "white" : "red",
-                            },
-                        ]}
-                        onPress={showDeleteAlert}
-                        onPressIn={handlePressIn}
-                        onPressOut={handlePressOut}
-                    >
-                        <MaterialIcons
-                            name={icon}
-                            size={icon === "delete" ? 40 : 35}
-                            color={icon === "delete-outline" ? "red" : "white"}
-                        />
-                    </TouchableOpacity>
+                    <Menu>
+
+                        <MenuTrigger style={{ paddingTop: 3, paddingRight: 1 }}>
+                            <EllipsisVerticalIcon size={hp(3.5)} color='gray' />
+                        </MenuTrigger>
+
+                        <MenuOptions>
+                            <MenuOption onSelect={() => alert(`Navigation to ...`)} style={{height: hp(5)}} >
+                                <Text style={{ 
+                                    fontSize: hp(1.7), 
+                                    paddingTop: 5, 
+                                    paddingRight: 10,
+                                    textAlign: 'right'
+                                }}>Ingredients</Text>
+                            </MenuOption>
+                            <MenuOption onSelect={showDeleteAlert} style={{height: hp(5)}} >
+                                <Text style={{ 
+                                    fontSize: hp(1.7), 
+                                    paddingBottom: 5, 
+                                    paddingRight: 10,
+                                    textAlign: 'right'
+                                }}>Remove</Text>
+                            </MenuOption>
+                        </MenuOptions>
+                    </Menu>
                 </View>
             )}
 
