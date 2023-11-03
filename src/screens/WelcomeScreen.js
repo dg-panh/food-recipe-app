@@ -3,13 +3,11 @@ import React, { useEffect, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
-import { useNavigation } from '@react-navigation/native'
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({navigation}) {
     const paddingAnimation1 = useSharedValue(0);
     const paddingAnimation2 = useSharedValue(0);
 
-    const navigation = useNavigation();
     const hasNavigated = useRef(false);
 
     useEffect(() => {

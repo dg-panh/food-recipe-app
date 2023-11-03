@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StatusBar, Image, TouchableOpacity, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { ChevronLeftIcon, ClockIcon, FireIcon } from 'react-native-heroicons/outline'
+import { ChevronLeftIcon, ClockIcon, FireIcon, PlusIcon } from 'react-native-heroicons/outline'
 import { HeartIcon, Square3Stack3DIcon, UserIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
@@ -12,6 +12,7 @@ import BadgeIcon from '../components/badgeIcon'
 import YoutubeIframe from 'react-native-youtube-iframe'
 import * as Linking from 'expo-linking'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker'
 
 
 const MISC = [
@@ -45,6 +46,10 @@ export default function RecipeDetailScreen(props) {
     const [meal, setMeal] = useState(null);
     //console.log('@meal detail:: ', meal)
     const [isLoading, setIsLoading] = useState(true);
+
+    const [date, setDate] = useState(new Date());
+    const [showDate, setShowDate] = useState(false);
+    const [mode, setMode] = useState('date');
 
     useEffect(() => {
         getMealDetail(item.idMeal);
@@ -137,6 +142,27 @@ export default function RecipeDetailScreen(props) {
         Linking.openURL(url);
     }
 
+    const onChangeDate = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setShowDate(false);
+        setDate(currentDate);
+        console.log("Current Date: " + currentDate)
+    };
+
+    const showMode = (currentMode) => {
+        DateTimePickerAndroid.open({
+            value: date,
+            onChange: onChangeDate,
+            mode: currentMode,
+            is24Hour: true,
+        });
+    };
+
+    const showDatepicker = () => {
+        setShowDate(true);
+        showMode('date');
+    };
+
     return (
         <ScrollView
             className='bg-white flex-1'
@@ -151,13 +177,18 @@ export default function RecipeDetailScreen(props) {
                 />
             </View>
 
-            <View className='w-full absolute flex-row justify-between items-center pt-12'>
+            <View className='w-full absolute flex-row justify-between items-start pt-12'>
                 <TouchableOpacity onPress={() => navigation.goBack()} className='p-2 rounded-full ml-5 bg-white'>
                     <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color={'#fbbf24'} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={toggleFavorite} className='p-2 rounded-full mr-5 bg-white'>
-                    <HeartIcon size={hp(3.5)} strokeWidth={4.5} color={isFav ? 'red' : 'gray'} />
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity onPress={toggleFavorite} className='p-2 rounded-full mr-5 bg-white'>
+                        <HeartIcon size={hp(3.5)} strokeWidth={4.5} color={isFav ? 'red' : 'gray'} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={showDatepicker} className='p-2 rounded-full mr-5 mt-5 bg-white'>
+                        <PlusIcon size={hp(3.5)} strokeWidth={4.5} color='#fbbf24' />
+                    </TouchableOpacity>                    
+                </View>
             </View>
 
             {/* meal description */}
