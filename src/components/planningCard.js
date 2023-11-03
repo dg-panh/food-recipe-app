@@ -8,7 +8,7 @@ import { BellIcon, EllipsisVerticalIcon } from "react-native-heroicons/outline";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 
-export default function PlanningCard({ item, remove, navigation }) {
+export default function PlanningCard({ item, date, remove, navigation }) {
     const [icon, setIcon] = useState("delete-outline");
     const [mealData, setMealData] = useState();
     const pressTimeout = useRef(null);
@@ -57,7 +57,7 @@ export default function PlanningCard({ item, remove, navigation }) {
                 },
                 {
                     text: "Delete",
-                    onPress: () => remove(mealData.idMeal),
+                    onPress: () => remove(date, mealData.idMeal),
                     style: "destructive",
                 },
             ]

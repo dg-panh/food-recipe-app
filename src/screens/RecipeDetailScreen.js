@@ -141,12 +141,52 @@ export default function RecipeDetailScreen(props) {
     const handleOpenLink = (url) => {
         Linking.openURL(url);
     }
+    const addMealToMealPlan = async (selectedDate, mealId) => {
+        try {
+            // Get the current meal plan data
+            const mealPlanJson = await AsyncStorage.getItem("mealPlanList");
+            const mealPlanData = mealPlanJson ? JSON.parse(mealPlanJson) : {};
+            console.log("current meal plan: ",mealPlanData);
+            // Get the meal plan for the selected date
+            const selectedMealPlan = mealPlanData[selectedDate] || [];
+    
+            // Check if the meal is already in the meal plan
+            if (!selectedMealPlan.includes(mealId)) {
+                // Add the meal to the selected date's meal plan
+                selectedMealPlan.push(mealId);
+    
+                // Update the meal plan data with the new meal
+                mealPlanData[selectedDate] = selectedMealPlan;
+    
+                // Save the updated meal plan data
+                await AsyncStorage.setItem(
+                    "mealPlanList",
+                    JSON.stringify(mealPlanData)
+                );
+    
+                console.log("Meal added to meal plan:", mealId, "on date:", selectedDate);
+            } else {
+                console.log("Meal already exists in the meal plan for date:", selectedDate);
+            }
+        } catch (error) {
+            console.error("Error adding meal to the meal plan:", error);
+        }
+    };
+    
 
     const onChangeDate = (event, selectedDate) => {
-        const currentDate = selectedDate;
-        setShowDate(false);
-        setDate(currentDate);
-        console.log("Current Date: " + currentDate)
+        if (event.type === "set") {
+            const currentDate = selectedDate;
+            setShowDate(false);
+            setDate(currentDate);
+            const formattedDate = currentDate.toISOString().split('T')[0];
+            console.log("Current Date: " + formattedDate);
+            // Calls addMealToMealPlan only when 'set'
+            addMealToMealPlan(formattedDate, meal.idMeal);
+        } else if (event.type === "dismissed") {
+            // Skip the call to addMealToMealPlan when 'dismissed'
+            setShowDate(false);
+        }
     };
 
     const showMode = (currentMode) => {
@@ -158,7 +198,11 @@ export default function RecipeDetailScreen(props) {
         });
     };
 
-    const showDatepicker = () => {
+    const showDatepicker = async () => {
+        const mealPlanJson = await AsyncStorage.getItem("mealPlanList");
+        const mealPlanData = mealPlanJson ? JSON.parse(mealPlanJson) : {};
+        console.log("current meal plan: ",mealPlanData);
+        
         setShowDate(true);
         showMode('date');
     };
