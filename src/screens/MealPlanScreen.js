@@ -6,14 +6,12 @@ import PlanningCard from "../components/planningCard";
 import { COLORS } from "../constants";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const date = new Date();
-let day = date.getDate();
-let month = date.getMonth() + 1;
-let year = date.getFullYear();
-let currentDate = `${year}-${month}-${day}`;
+
+let currentDate = new Date().toISOString().split('T')[0]; //2023-11-04. get current date 
 export default function MealPlanScreen({ navigation }) {
     const [mealPlanData, setMealPlanData] = useState({});
-    const [activeDate, setActiveDate] = useState('');
+    const [activeDate, setActiveDate] = useState(currentDate);
+    const [agendaKey, setAgendaKey] = useState(-1);
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -22,6 +20,9 @@ export default function MealPlanScreen({ navigation }) {
         }
     }, [isFocused]);
 
+    useEffect(() => {
+        console.log("Updated mealPlanData: ", mealPlanData);
+    }, [mealPlanData]);
     async function loadMealPlan() {
         try {
             const storedMealPlan = await AsyncStorage.getItem("mealPlanList");
@@ -38,10 +39,9 @@ export default function MealPlanScreen({ navigation }) {
 
     async function removeMealFromDay(date, mealId) {
         try {
-            console.log("To be deleted: ",date,": id:",mealId);
-			const updatedMealPlan = { ...mealPlanData };
-            console.log("old: ",updatedMealPlan);
-
+            console.log("To be deleted: ", date, ": id:", mealId);
+            const updatedMealPlan = { ...mealPlanData };
+            console.log("Old mealPlanData: ", mealPlanData);
             if (updatedMealPlan[date]) {
                 updatedMealPlan[date] = updatedMealPlan[date].filter(
                     (meal) => meal !== mealId
@@ -49,13 +49,10 @@ export default function MealPlanScreen({ navigation }) {
                 if (updatedMealPlan[date].length === 0) {
                     delete updatedMealPlan[date];
                 }
-                await AsyncStorage.setItem(
-                    "mealPlanList",
-                    JSON.stringify(updatedMealPlan)
-                );
+                await AsyncStorage.setItem("mealPlanList", JSON.stringify(updatedMealPlan))
                 setMealPlanData(updatedMealPlan);
-                console.log("new: ",updatedMealPlan);
-        }
+                setAgendaKey((prevKey) => prevKey = -prevKey);
+            }
         } catch (error) {
             console.error(
                 "@Error removing meal from meal plan - Meal plan screen::",
@@ -84,9 +81,10 @@ export default function MealPlanScreen({ navigation }) {
                     </Text>
                 </View>
                 <Agenda
+                    key={agendaKey}
                     items={mealPlanData}
                     // loadItemsForMonth={loadItems}
-                    selected={currentDate}
+                    selected={activeDate}
                     showOnlySelectedDayItems
                     // hideExtraDays={false}
                     refreshControl={null}
