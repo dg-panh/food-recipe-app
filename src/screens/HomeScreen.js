@@ -9,7 +9,7 @@ import Recipes from '../components/recipes'
 import Header from '../components/header'
 import { categoryData } from '../constants'
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   const [activeCategory, setActiveCategory] = useState('Beef')
   const [categories, setCategories] = useState([])
   const [meals, setMeals] = useState([])
@@ -97,7 +97,7 @@ export default function HomeScreen() {
 
         {/* recipes */}
         <View>
-          <Recipes meals={meals} categories={categories} />
+          <Recipes meals={meals} categories={categories} navigation={navigation} />
         </View>
 
       </ScrollView>

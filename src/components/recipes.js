@@ -6,11 +6,9 @@ import Animated, { FadeInDown } from 'react-native-reanimated'
 
 import { mealData } from '../constants'
 import Loading from './loading'
-import { useNavigation } from '@react-navigation/native'
 
 
-export default function Recipes({ categories, meals }) {
-    const navigation = useNavigation();
+export default function Recipes({ categories, meals, navigation }) {
     return (
         <View className='mx-4 space-y-2'>
             <Text

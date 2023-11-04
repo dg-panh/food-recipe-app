@@ -38,18 +38,15 @@ const MISC = [
     },
 ]
 
-export default function RecipeDetailScreen(props) {
-    let item = props.route.params;
+export default function RecipeDetailScreen({route, navigation}) {
+    let item = route.params;
     //console.log('@meal detail:: ', item)
     const [isFav, setIsFav] = useState(false);
-    const navigation = useNavigation();
     const [meal, setMeal] = useState(null);
     //console.log('@meal detail:: ', meal)
     const [isLoading, setIsLoading] = useState(true);
 
     const [date, setDate] = useState(new Date());
-    const [showDate, setShowDate] = useState(false);
-    const [mode, setMode] = useState('date');
 
     useEffect(() => {
         getMealDetail(item.idMeal);
@@ -62,7 +59,7 @@ export default function RecipeDetailScreen(props) {
             if (favorites) {
                 const parsedFavorites = JSON.parse(favorites);
                 // Check if the current meal is in the favorites list
-                if (parsedFavorites.includes(props.route.params.idMeal)) {
+                if (parsedFavorites.includes(item.idMeal)) {
                     setIsFav(true);
                 }
             }
@@ -86,10 +83,10 @@ export default function RecipeDetailScreen(props) {
             // Update the list of favorite meal IDs
             if (isFav) {
                 updatedFavorites = updatedFavorites.filter(
-                    (id) => id !== props.route.params.idMeal
+                    (id) => id !== item.idMeal
                 );
             } else {
-                updatedFavorites.push(props.route.params.idMeal);
+                updatedFavorites.push(item.idMeal);
             }
 
             // Save the updated list back to AsyncStorage
@@ -177,7 +174,6 @@ export default function RecipeDetailScreen(props) {
     const onChangeDate = (event, selectedDate) => {
         if (event.type === "set") {
             const currentDate = selectedDate;
-            setShowDate(false);
             setDate(currentDate);
             const formattedDate = currentDate.toISOString().split('T')[0];
             console.log("Current Date: " + formattedDate);
@@ -185,7 +181,6 @@ export default function RecipeDetailScreen(props) {
             addMealToMealPlan(formattedDate, meal.idMeal);
         } else if (event.type === "dismissed") {
             // Skip the call to addMealToMealPlan when 'dismissed'
-            setShowDate(false);
         }
     };
 
@@ -203,7 +198,6 @@ export default function RecipeDetailScreen(props) {
         const mealPlanData = mealPlanJson ? JSON.parse(mealPlanJson) : {};
         console.log("current meal plan: ",mealPlanData);
         
-        setShowDate(true);
         showMode('date');
     };
 
