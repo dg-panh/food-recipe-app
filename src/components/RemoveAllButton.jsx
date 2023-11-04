@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const RemoveAllButton = ({ onPress, enabled }) => {
+const RemoveAllButton = ({ onPress, enabled, text }) => {
     const [icon, setIcon] = useState("delete-outline");
 
     const handlePressIn = () => {
@@ -15,8 +15,8 @@ const RemoveAllButton = ({ onPress, enabled }) => {
 
     const handleRemoveAll = () => {
         Alert.alert(
-            "Remove All Favorites",
-            "Are you sure you want to remove all your favorite data?",
+            text,
+            "Are you sure you want to remove these favorite data?",
             [
                 {
                     text: "Cancel",
@@ -24,7 +24,7 @@ const RemoveAllButton = ({ onPress, enabled }) => {
                     style: "cancel",
                 },
                 {
-                    text: "Yes, Remove All",
+                    text: "Yes",
                     onPress: onPress,
                 },
             ]
@@ -41,7 +41,7 @@ const RemoveAllButton = ({ onPress, enabled }) => {
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
             >
-                <Text style={styles.clearAllText}>Remove All Favorites</Text>
+                <Text style={styles.clearAllText}>{text}</Text>
                 <MaterialIcons
                     name={icon}
                     size={35}

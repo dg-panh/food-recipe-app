@@ -17,12 +17,27 @@ export default function FavoriteScreen({ navigation }) {
     const [favMealData, setFavMealData] = useState([]);
     const [searchText, setSearchText] = useState('');
     const isFocused = useIsFocused();
+    const [displayedFavorites, setDisplayedFavorites] = useState([]); // Track displayed favorites
 
     useEffect(() => {
         if (isFocused) {
             loadFavorites();
         }
     }, [isFocused]);
+
+    // Update displayedFavorites whenever favMealData or searchText changes
+    useEffect(() => {
+        if (searchText) {
+            // Filter displayed favorites based on search text
+            const filteredFavorites = favMealData.filter((meal) =>
+                meal.strMeal.toLowerCase().includes(searchText.toLowerCase())
+            );
+            setDisplayedFavorites(filteredFavorites);
+        } else {
+            // When search text is empty, display all favorites
+            setDisplayedFavorites(favMealData);
+        }
+    }, [favMealData, searchText]);
 
     async function loadFavorites() {
         try {
@@ -51,10 +66,34 @@ export default function FavoriteScreen({ navigation }) {
         }
     }
 
+    async function removeAllDisplayedFavorites() {
+        try {
+            // Remove the displayed favorites (filtered by search text)
+            const updatedFavorites = favoriteIds.filter((favId) => {
+                const meal = favMealData.find((m) => m.idMeal === favId);
+                return !displayedFavorites.includes(meal);
+            });
+
+            await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+            setFavoriteIds(updatedFavorites);
+
+            // Remove displayed favorites from favMealData
+            setFavMealData(favMealData.filter((meal) => !displayedFavorites.includes(meal)));
+        } catch (error) {
+            console.error('Error removing displayed favorites:', error);
+        }
+    }
+
     async function removeAllFavorites() {
-        await AsyncStorage.removeItem('favorites');
-        setFavoriteIds([]);
-        setFavMealData([]); // Clear favMealData
+        // If search text is empty, remove all favorites as before
+        if (searchText === '') {
+            await AsyncStorage.removeItem('favorites');
+            setFavoriteIds([]);
+            setFavMealData([]);
+        } else {
+            // Remove only the displayed favorites
+            removeAllDisplayedFavorites();
+        }
     }
 
     async function fetchMealData(ids) {
@@ -71,7 +110,7 @@ export default function FavoriteScreen({ navigation }) {
         }
         return mealDataArray;
     }
-    
+
     const handleSearchChange = (text) => {
         setSearchText(text);
     };
@@ -80,13 +119,15 @@ export default function FavoriteScreen({ navigation }) {
         setSearchText('');
     };
 
-    const enabled = favoriteIds.length > 1;
-    const isSearching = searchText.length > 0;
+    const enabled =
+        (searchText === '' && favoriteIds.length > 1) ||
+        (searchText !== '' && displayedFavorites.length > 1);
 
-    // Filter favMealData based on search text
-    const searchMealData = favMealData.filter((meal) =>
-        meal.strMeal.toLowerCase().includes(searchText.toLowerCase())
-    );
+    const removeAllBtnText =
+        (searchText === '' && favoriteIds.length > 1) ? "Remove All Favorites" :
+        (searchText !== '' && displayedFavorites.length > 1) ? "Remove Searched Favorites" : "Remove All";
+
+    const isSearching = searchText.length > 0;
 
     return (
         <View className="flex-1 bg-gray-50">
@@ -97,13 +138,11 @@ export default function FavoriteScreen({ navigation }) {
                 className="space-y-6 pt-14"
             >
                 <Header />
-
                 <View className="mx-4 space-y-2 mb-2">
                     <Text style={{ fontSize: hp(3.8) }} className="font-semibold text-amber-500">
                         Favorite <Text className="text-neutral-600">Collection</Text>
                     </Text>
                 </View>
-
                 <View className="mx-4 flex-row items-center rounded-full bg-black/5 p-[6px]">
                     <TextInput
                         placeholder="Search any recipe"
@@ -122,28 +161,25 @@ export default function FavoriteScreen({ navigation }) {
                         <MagnifyingGlassIcon size={hp(2.5)} strokeWidth={3} color="gray" />
                     </View>
                 </View>
-
-                <RemoveAllButton enabled={enabled} onPress={removeAllFavorites} />
-
+                <RemoveAllButton enabled={enabled} onPress={removeAllFavorites} text={removeAllBtnText}/>
                 <ScrollView showsVerticalScrollIndicator={true}>
-                    {searchMealData.length === 0 ? (
+                    {displayedFavorites.length === 0 ? (
                         <View style={styles.noResultContainer}>
                             <AntDesign name="folderopen" size={48} color="black" />
                             <Text style={styles.noResultText}>
                                 No favorite recipes found.
                             </Text>
                         </View>
-                        ) : (
-                            searchMealData.map((meal) => (
-                                <FavCard
-                                    key={meal.idMeal}
-                                    mealData={meal}
-                                    remove={removeFavorite}
-                                    navigation={navigation}
-                                />
-                            ))
-                        )
-                    }
+                    ) : (
+                        displayedFavorites.map((meal) => (
+                            <FavCard
+                                key={meal.idMeal}
+                                mealData={meal}
+                                remove={removeFavorite}
+                                navigation={navigation}
+                            />
+                        ))
+                    )}
                 </ScrollView>
             </ScrollView>
         </View>
@@ -162,4 +198,3 @@ const styles = StyleSheet.create({
     },
     noResultText: { marginTop: 10, fontSize: 18 },
 });
-
